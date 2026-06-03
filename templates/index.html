@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>M'Ai Clips</title>
+<style>
+body { background: #0a0a0a; color: white; font-family: Arial; text-align: center; padding: 50px; }
+h1 { color: #00c8ff; font-size: 50px; }
+.upload-box { border: 2px dashed #00c8ff; padding: 40px; border-radius: 20px; margin: 30px auto; max-width: 500px; }
+input[type="file"] { margin: 20px; }
+button { background: #00c8ff; color: black; border: none; padding: 15px 40px; font-size: 18px; border-radius: 10px; cursor: pointer; }
+#result { margin-top: 30px; }
+</style>
+</head>
+<body>
+<h1>M'Ai Clips</h1>
+<p>Lade dein Video hoch und erhalte automatische TikTok Clips!</p>
+<div class="upload-box">
+<input type="file" id="videoFile" accept="video/*">
+<br>
+<button onclick="uploadVideo()">🎬 Clips erstellen</button>
+</div>
+<div id="result"></div>
+<script>
+async function uploadVideo() {
+const file = document.getElementById('videoFile').files[0];
+if (!file) { alert('Bitte Video auswählen!'); return; }
+document.getElementById('result').innerHTML = '⏳ KI verarbeitet dein Video...';
+const formData = new FormData();
+formData.append('video', file);
+const response = await fetch('/upload', { method: 'POST', body: formData });
+const data = await response.json();
+document.getElementById('result').innerHTML = '✅ Fertig! ' + data.clips.length + ' Clips erstellt!';
+}
+</script>
+</body>
+</html>
